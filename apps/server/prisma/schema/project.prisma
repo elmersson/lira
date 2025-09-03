@@ -1,0 +1,94 @@
+model ProjectUser {
+  userId            String  @id @map("_id")
+  cognitoId         String  @unique
+  username          String  @unique
+  profilePictureUrl String?
+  teamId            String?
+
+  user              User             @relation(fields: [userId], references: [id])
+  authoredTasks     Task[]           @relation("TaskAuthor")
+  assignedTasks     Task[]           @relation("TaskAssignee")
+  taskAssignments   TaskAssignment[]
+  attachments       Attachment[]
+  comments          Comment[]
+  team              Team?            @relation(fields: [teamId], references: [id])
+}
+
+model Team {
+  id                   String        @id @map("_id")
+  teamName             String
+  productOwnerUserId   String?
+  projectManagerUserId String?
+  projectTeams         ProjectTeam[]
+  projectUsers         ProjectUser[]
+}
+
+model Project {
+  id           String        @id @map("_id")
+  name         String
+  description  String?
+  startDate    DateTime?
+  endDate      DateTime?
+  tasks        Task[]
+  projectTeams ProjectTeam[]
+}
+
+model ProjectTeam {
+  id        String @id @map("_id")
+  teamId    String
+  projectId String
+  team      Team    @relation(fields: [teamId], references: [id])
+  project   Project @relation(fields: [projectId], references: [id])
+}
+
+model Task {
+  id             String      @id @map("_id")
+  title          String
+  description    String?
+  status         String?
+  priority       String?
+  tags           String?
+  startDate      DateTime?
+  dueDate        DateTime?
+  points         Int?
+  projectId      String
+  authorUserId   String
+  assignedUserId String?
+
+  project         Project          @relation(fields: [projectId], references: [id])
+  author          ProjectUser      @relation("TaskAuthor", fields: [authorUserId], references: [userId])
+  assignee        ProjectUser?     @relation("TaskAssignee", fields: [assignedUserId], references: [userId])
+  taskAssignments TaskAssignment[]
+  attachments     Attachment[]
+  comments        Comment[]
+}
+
+model TaskAssignment {
+  id     String @id @map("_id")
+  userId String
+  taskId String
+
+  user ProjectUser @relation(fields: [userId], references: [userId])
+  task Task @relation(fields: [taskId], references: [id])
+}
+
+model Attachment {
+  id           String @id @map("_id")
+  fileURL      String
+  fileName     String?
+  taskId       String
+  uploadedById String
+
+  task       Task @relation(fields: [taskId], references: [id])
+  uploadedBy ProjectUser @relation(fields: [uploadedById], references: [userId])
+}
+
+model Comment {
+  id     String @id @map("_id")
+  text   String
+  taskId String
+  userId String
+
+  task Task @relation(fields: [taskId], references: [id])
+  user ProjectUser @relation(fields: [userId], references: [userId])
+}
