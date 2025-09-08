@@ -1,70 +1,49 @@
-# my-better-t-app
+<h1 align="center">
+  <img alt="logo" src="./assets/icon.png" width="124px" style="border-radius:10px"/><br/>
+Mobile App </h1>
 
-This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines Express, and more.
+> This Project is based on [Obytes starter](https://starter.obytes.com)
 
-## Features
+## Requirements
 
-- **TypeScript** - For type safety and improved developer experience
-- **React Native** - Build mobile apps using React
-- **Expo** - Tools for React Native development
-- **TailwindCSS** - Utility-first CSS for rapid UI development
-- **shadcn/ui** - Reusable UI components
-- **Express** - Fast, unopinionated web framework
-- **Bun** - Runtime environment
-- **Prisma** - TypeScript-first ORM
-- **PostgreSQL** - Database engine
-- **Husky** - Git hooks for code quality
-- **Turborepo** - Optimized monorepo build system
+- [React Native dev environment ](https://reactnative.dev/docs/environment-setup)
+- [Node.js LTS release](https://nodejs.org/en/)
+- [Git](https://git-scm.com/)
+- [Watchman](https://facebook.github.io/watchman/docs/install#buildinstall), required only for macOS or Linux users
+- [Pnpm](https://pnpm.io/installation)
+- [Cursor](https://www.cursor.com/) or [VS Code Editor](https://code.visualstudio.com/download) ⚠️ Make sure to install all recommended extension from `.vscode/extensions.json`
 
-## Getting Started
+## 👋 Quick start
 
-First, install the dependencies:
+Clone the repo to your machine and install deps :
 
-```bash
-bun install
-```
-## Database Setup
+```sh
+git clone https://github.com/user/repo-name
 
-This project uses PostgreSQL with Prisma.
+cd ./repo-name
 
-1. Make sure you have a PostgreSQL database set up.
-2. Update your `apps/server/.env` file with your PostgreSQL connection details.
-
-3. Generate the Prisma client and push the schema:
-```bash
-bun db:push
+pnpm install
 ```
 
+To run the app on ios
 
-Then, run the development server:
-
-```bash
-bun dev
+```sh
+pnpm ios
 ```
 
-Use the Expo Go app to run the mobile application.
-The API is running at [http://localhost:3000](http://localhost:3000).
+To run the app on Android
 
-
-
-
-
-## Project Structure
-
-```
-my-better-t-app/
-├── apps/
-│   ├── native/      # Mobile application (React Native, Expo)
-│   └── server/      # Backend API (Express)
+```sh
+pnpm android
 ```
 
-## Available Scripts
+## ✍️ Documentation
 
-- `bun dev`: Start all applications in development mode
-- `bun build`: Build all applications
-- `bun dev:web`: Start only the web application
-- `bun dev:server`: Start only the server
-- `bun check-types`: Check TypeScript types across all apps
-- `bun dev:native`: Start the React Native/Expo development server
-- `bun db:push`: Push schema changes to database
-- `bun db:studio`: Open database studio UI
+- [Rules and Conventions](https://starter.obytes.com/getting-started/rules-and-conventions/)
+- [Project structure](https://starter.obytes.com/getting-started/project-structure)
+- [Environment vars and config](https://starter.obytes.com/getting-started/environment-vars-config)
+- [UI and Theming](https://starter.obytes.com/ui-and-theme/ui-theming)
+- [Components](https://starter.obytes.com/ui-and-theme/components)
+- [Forms](https://starter.obytes.com/ui-and-theme/Forms)
+- [Data fetching](https://starter.obytes.com/guides/data-fetching)
+- [Contribute to starter](https://starter.obytes.com/how-to-contribute/)
