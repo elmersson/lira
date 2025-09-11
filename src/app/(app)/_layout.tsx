@@ -1,28 +1,13 @@
-/* eslint-disable react/no-unstable-nested-components */
-import { Link, Redirect, SplashScreen, Tabs } from 'expo-router';
-import React, { useCallback, useEffect } from 'react';
+import { Redirect, Stack } from 'expo-router';
+import React from 'react';
 
-import { Pressable, Text } from '@/components/ui';
-import {
-  Feed as FeedIcon,
-  Settings as SettingsIcon,
-  Style as StyleIcon,
-} from '@/components/ui/icons';
+import { WebLayout } from '@/components/layout/web-layout';
+import { colors } from '@/components/ui';
 import { useAuth, useIsFirstTime } from '@/lib';
 
 export default function TabLayout() {
   const status = useAuth.use.status();
   const [isFirstTime] = useIsFirstTime();
-  const hideSplash = useCallback(async () => {
-    await SplashScreen.hideAsync();
-  }, []);
-  useEffect(() => {
-    if (status !== 'idle') {
-      setTimeout(() => {
-        hideSplash();
-      }, 1000);
-    }
-  }, [hideSplash, status]);
 
   if (isFirstTime) {
     return <Redirect href="/onboarding" />;
@@ -31,45 +16,17 @@ export default function TabLayout() {
     return <Redirect href="/login" />;
   }
   return (
-    <Tabs>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Feed',
-          tabBarIcon: ({ color }) => <FeedIcon color={color} />,
-          headerRight: () => <CreateNewPostLink />,
-          tabBarButtonTestID: 'feed-tab',
-        }}
-      />
-
-      <Tabs.Screen
-        name="style"
-        options={{
-          title: 'Style',
+    <WebLayout>
+      <Stack
+        screenOptions={{
           headerShown: false,
-          tabBarIcon: ({ color }) => <StyleIcon color={color} />,
-          tabBarButtonTestID: 'style-tab',
+          contentStyle: { backgroundColor: colors.white },
         }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: 'Settings',
-          headerShown: false,
-          tabBarIcon: ({ color }) => <SettingsIcon color={color} />,
-          tabBarButtonTestID: 'settings-tab',
-        }}
-      />
-    </Tabs>
+      >
+        <Stack.Screen name="index" options={{ title: 'Feed' }} />
+        <Stack.Screen name="style" options={{ title: 'Style' }} />
+        <Stack.Screen name="settings" options={{ title: 'Settings' }} />
+      </Stack>
+    </WebLayout>
   );
 }
-
-const CreateNewPostLink = () => {
-  return (
-    <Link href="/feed/add-post" asChild>
-      <Pressable>
-        <Text className="px-3 text-primary-300">Create</Text>
-      </Pressable>
-    </Link>
-  );
-};
