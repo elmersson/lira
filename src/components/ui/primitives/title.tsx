@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { View } from 'react-native';
 
-import { Text, View } from '@/components/ui';
+import { Text } from './text';
 
 type Props = {
   text: string;

@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { Text, View } from '@/components/ui';
+import { Text, Title, View } from '@/components/ui';
 import colors from '@/components/ui/colors';
 
-import { Title } from './title';
 type ColorName = keyof typeof colors;
 
 export const Colors = () => {

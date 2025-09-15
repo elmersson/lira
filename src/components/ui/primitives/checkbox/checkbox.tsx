@@ -8,9 +8,8 @@ import {
 } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
-import colors from '@/components/ui/colors';
-
-import { Text } from './text';
+import colors from '../../colors';
+import { Text } from '../text';
 
 const SIZE = 20;
 const WIDTH = 50;

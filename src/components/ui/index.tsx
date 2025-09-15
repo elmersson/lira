@@ -1,17 +1,18 @@
 import { cssInterop } from 'nativewind';
 import Svg from 'react-native-svg';
 
-export * from './button';
-export * from './checkbox';
-export { default as colors } from './colors';
-export * from './focus-aware-status-bar';
-export * from './image';
-export * from './input';
-export * from './list';
-export * from './modal';
-export * from './progress-bar';
-export * from './select';
-export * from './text';
+export * from './primitives/button/button';
+export * from './primitives/checkbox/checkbox';
+export * from './primitives/cover';
+export * from './primitives/focus-aware-status-bar';
+export * from './primitives/image/image';
+export * from './primitives/input/input';
+export * from './primitives/list';
+export * from './primitives/modal';
+export * from './primitives/progress-bar';
+export * from './primitives/select/select';
+export * from './primitives/text';
+export * from './primitives/title';
 export * from './utils';
 
 // export base components from react-native

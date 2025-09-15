@@ -1,15 +1,16 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
 
-import { Cover } from '@/components/cover';
 import {
   Button,
+  Cover,
   FocusAwareStatusBar,
   SafeAreaView,
   Text,
   View,
 } from '@/components/ui';
-import { useIsFirstTime } from '@/lib/hooks';
+import { useIsFirstTime } from '@/lib';
+
 export default function Onboarding() {
   const [_, setIsFirstTime] = useIsFirstTime();
   const router = useRouter();

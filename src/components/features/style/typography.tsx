@@ -1,8 +1,7 @@
 import React from 'react';
+import { View } from 'react-native';
 
-import { Text, View } from '@/components/ui';
-
-import { Title } from './title';
+import { Text, Title } from '../../ui';
 
 export const Typography = () => {
   return (
