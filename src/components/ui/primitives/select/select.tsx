@@ -14,13 +14,11 @@ import type { SvgProps } from 'react-native-svg';
 import Svg, { Path } from 'react-native-svg';
 import { tv } from 'tailwind-variants';
 
-import colors from '@/components/ui/colors';
-import { CaretDown } from '@/components/ui/icons';
-
-import type { InputControllerType } from './input';
-import { useModal } from './modal';
-import { Modal } from './modal';
-import { Text } from './text';
+import colors from '../../colors';
+import { CaretDown } from '../../icons';
+import type { InputControllerType } from '../input/input';
+import { Modal, useModal } from '../modal';
+import { Text } from '../text';
 
 const selectTv = tv({
   slots: {

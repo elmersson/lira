@@ -2,7 +2,8 @@ import { Redirect, Stack } from 'expo-router';
 import React from 'react';
 
 import { WebLayout } from '@/components/layout/web-layout';
-import { colors } from '@/components/ui';
+import colors from '@/components/ui/colors';
+
 import { useAuth, useIsFirstTime } from '@/lib';
 
 export default function TabLayout() {

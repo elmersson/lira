@@ -3,8 +3,8 @@ import React from 'react';
 
 import type { Post } from '@/api';
 import { usePosts } from '@/api';
-import { Card } from '@/components/card';
 import { EmptyList, FocusAwareStatusBar, Text, View } from '@/components/ui';
+import { Card } from '@/components/ui/layouts/card';
 
 export default function Feed() {
   const { data, isPending, isError } = usePosts();

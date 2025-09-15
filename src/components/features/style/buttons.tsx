@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { Button, View } from '@/components/ui';
-
-import { Title } from './title';
+import { Button, Title, View } from '@/components/ui';
 
 export const Buttons = () => {
   return (
