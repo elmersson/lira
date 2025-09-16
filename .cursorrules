@@ -17,7 +17,7 @@ Every time you choose to apply a rule(s), explicitly state the rule(s) in the ou
 - To install new packages use `npx expo install <package-name>`
 - Structure repository files as follows:
 
-```
+```text
 src
   ├── api   ## API related code, mainly using axios and react query
   ├── app   ## the main entry point for expo router(file-based routing), when you can find screens and navigation setup
