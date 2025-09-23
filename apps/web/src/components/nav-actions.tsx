@@ -16,7 +16,7 @@ import {
   Trash,
   Trash2,
 } from "lucide-react";
-import * as React from "react";
+import { useId, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -98,11 +98,8 @@ const data = [
 ];
 
 export function NavActions() {
-  const [isOpen, setIsOpen] = React.useState(false);
-
-  React.useEffect(() => {
-    setIsOpen(true);
-  }, []);
+  const [isOpen, setIsOpen] = useState(false);
+  const baseId = useId();
 
   return (
     <div className="flex items-center gap-2 text-sm">
@@ -128,12 +125,15 @@ export function NavActions() {
         >
           <Sidebar className="bg-transparent" collapsible="none">
             <SidebarContent>
-              {data.map((group, index) => (
-                <SidebarGroup className="border-b last:border-none" key={index}>
+              {data.map((group) => (
+                <SidebarGroup
+                  className="border-b last:border-none"
+                  key={`${baseId}-group-${group[0]?.label}`}
+                >
                   <SidebarGroupContent className="gap-0">
                     <SidebarMenu>
-                      {group.map((item, index) => (
-                        <SidebarMenuItem key={index}>
+                      {group.map((item) => (
+                        <SidebarMenuItem key={`${baseId}-item-${item.label}`}>
                           <SidebarMenuButton>
                             <item.icon /> <span>{item.label}</span>
                           </SidebarMenuButton>
