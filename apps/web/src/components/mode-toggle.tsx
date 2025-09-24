@@ -10,11 +10,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useSetTheme, useTheme as useUserTheme } from "@/store/user-settings";
+import { useSetTheme } from "@/store/user-settings";
 
 export function ModeToggle() {
   const { setTheme: setNextTheme } = useTheme();
-  const userTheme = useUserTheme();
   const setUserTheme = useSetTheme();
 
   const handleThemeChange = (theme: "light" | "dark" | "system") => {
