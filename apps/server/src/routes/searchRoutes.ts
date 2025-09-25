@@ -1,11 +1,9 @@
 import { Router } from "express";
+import { search, searchSuggestions } from "@/controllers/searchController";
 
 const router = Router();
 
-router.get("/", (req, res) => {
-  setTimeout(() => {
-    res.status(200).send("OK");
-  }, 1000);
-});
+router.get("/", search);
+router.get("/suggestions", searchSuggestions);
 
 export default router;

@@ -7,8 +7,7 @@ import { Button } from "@/components/ui/button";
 const SERVER_URL =
   process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
 
-const REFETCH_INTERVAL = 5000;
-const RETRY_COUNT = 1;
+const RETRY_COUNT = 3;
 
 // Define all available endpoints
 const ENDPOINTS = [
@@ -102,7 +101,6 @@ function EndpointStatus({
   } = useQuery({
     queryKey: [`${name.toLowerCase()}-status`],
     queryFn: () => checkEndpointStatus(path),
-    refetchInterval: REFETCH_INTERVAL,
     retry: RETRY_COUNT,
   });
 
@@ -112,8 +110,17 @@ function EndpointStatus({
     <div className="flex items-center justify-between py-2">
       <div className="flex items-center gap-3">
         <StatusDot isLoading={isLoading} isOnline={isOnline} />
-        <span className="font-medium">{displayName}</span>
-        <code className="text-muted-foreground text-xs">{path}</code>
+        <a className="font-medium hover:underline" href={path}>
+          {displayName}
+        </a>
+        <a
+          className="text-muted-foreground text-xs underline transition-colors hover:text-foreground"
+          href={`${SERVER_URL}${path}`}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          {path}
+        </a>
       </div>
       <div className="text-right">
         <div className="text-sm">
@@ -135,7 +142,6 @@ export default function Home() {
   const { data: mainStatus, isLoading: isMainLoading } = useQuery({
     queryKey: ["main-status"],
     queryFn: () => checkEndpointStatus("/"),
-    refetchInterval: REFETCH_INTERVAL,
     retry: RETRY_COUNT,
   });
 
@@ -169,9 +175,6 @@ export default function Home() {
                 path={endpoint.path}
               />
             ))}
-          </div>
-          <div className="border-t pt-3 text-muted-foreground text-xs">
-            Status updates every {REFETCH_INTERVAL / 1000} seconds
           </div>
         </section>
         <Link href="/dashboard">
