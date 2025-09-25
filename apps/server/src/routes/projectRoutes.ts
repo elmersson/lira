@@ -1,11 +1,9 @@
 import { Router } from "express";
+import { createProject, getProjects } from "@/controllers/projectController";
 
 const router = Router();
 
-router.get("/", (req, res) => {
-  setTimeout(() => {
-    res.status(200).send("OK");
-  }, 1200);
-});
+router.get("/", getProjects);
+router.post("/", createProject);
 
 export default router;

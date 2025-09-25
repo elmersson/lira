@@ -1,11 +1,16 @@
 import { Router } from "express";
+import {
+  createTeam,
+  deleteTeam,
+  getTeams,
+  updateTeam,
+} from "@/controllers/teamController";
 
 const router = Router();
 
-router.get("/", (req, res) => {
-  setTimeout(() => {
-    res.status(200).send("OK");
-  }, 600);
-});
+router.get("/", getTeams);
+router.post("/", createTeam);
+router.put("/:id", updateTeam);
+router.delete("/:id", deleteTeam);
 
 export default router;
