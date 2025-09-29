@@ -4,7 +4,6 @@ import { formatValidationErrors, HTTP_STATUS } from "@/helpers";
 import { PrismaClient } from "../../prisma/generated/client";
 import {
   createProjectSchema,
-  type UpdateProjectInput,
   updateProjectSchema,
 } from "../schemas/projectSchemas";
 
@@ -17,38 +16,6 @@ const validateProjectId = (id: string): number => {
     throw new Error("Invalid project ID format");
   }
   return projectId;
-};
-
-// Helper function to prepare update data
-const prepareUpdateData = (validatedData: UpdateProjectInput) => {
-  const updateData: {
-    name?: string;
-    description?: string | null;
-    startDate?: Date | null;
-    endDate?: Date | null;
-  } = {};
-
-  if (validatedData.name !== undefined) {
-    updateData.name = validatedData.name;
-  }
-
-  if (validatedData.description !== undefined) {
-    updateData.description = validatedData.description?.trim() || null;
-  }
-
-  if (validatedData.startDate !== undefined) {
-    updateData.startDate = validatedData.startDate
-      ? new Date(validatedData.startDate)
-      : null;
-  }
-
-  if (validatedData.endDate !== undefined) {
-    updateData.endDate = validatedData.endDate
-      ? new Date(validatedData.endDate)
-      : null;
-  }
-
-  return updateData;
 };
 
 export const getProjects = async (

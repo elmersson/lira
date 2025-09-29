@@ -1,9 +1,11 @@
+/** biome-ignore-all lint/style/noMagicNumbers: <explanation> */
 import "dotenv/config";
 import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+import { HTTP_STATUS } from "./helpers";
 /* ROUTE IMPORTS */
 import projectRoutes from "./routes/projectRoutes";
 import searchRoutes from "./routes/searchRoutes";
@@ -29,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 /* ROUTES */
 app.get("/", (_req, res) => {
   setTimeout(() => {
-    res.status(200).send("OK");
+    res.status(HTTP_STATUS.OK).send("OK");
   }, 200);
 });
 
@@ -42,5 +44,6 @@ app.use("/teams", teamRoutes);
 /* SERVER */
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
+  // biome-ignore lint/suspicious/noConsole: false positive
   console.log(`Server is running on port ${port}`);
 });
