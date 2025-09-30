@@ -74,6 +74,56 @@ export const getTeams = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+export const getTeamById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const teamId = Number.parseInt(id, 10);
+
+    if (Number.isNaN(teamId)) {
+      res.status(HTTP_STATUS.BAD_REQUEST).json({
+        message: "Invalid team ID",
+      });
+      return;
+    }
+
+    const team = await prisma.team.findUnique({
+      where: { id: teamId },
+      include: {
+        user: {
+          select: { userId: true, username: true, cognitoId: true },
+        },
+        projectTeams: {
+          include: {
+            project: {
+              select: { id: true, name: true },
+            },
+          },
+        },
+      },
+    });
+
+    if (!team) {
+      res.status(HTTP_STATUS.NOT_FOUND).json({
+        message: "Team not found",
+      });
+      return;
+    }
+
+    res.status(HTTP_STATUS.OK).json({
+      data: team,
+    });
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
+    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+      message: `Error retrieving team: ${errorMessage}`,
+    });
+  }
+};
+
 export const createTeam = async (
   req: Request,
   res: Response

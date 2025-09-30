@@ -30,13 +30,19 @@ export const createProjectSchema = z
 
     startDate: z
       .string()
-      .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid start date format. Use YYYY-MM-DD format")
+      .regex(
+        /^\d{4}-\d{2}-\d{2}$/,
+        "Invalid start date format. Use YYYY-MM-DD format"
+      )
       .optional()
       .or(z.literal("")),
 
     endDate: z
       .string()
-      .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid end date format. Use YYYY-MM-DD format")
+      .regex(
+        /^\d{4}-\d{2}-\d{2}$/,
+        "Invalid end date format. Use YYYY-MM-DD format"
+      )
       .optional()
       .or(z.literal("")),
   })
