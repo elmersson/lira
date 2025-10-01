@@ -14,4 +14,6 @@ export const QUERY_KEYS = {
   TASKS: ["tasks"],
   TEAMS: ["teams"],
   USERS: ["users"],
+  SEARCH: ["search"],
+  SUGGESTIONS: ["suggestions"],
 } as const;
