@@ -52,8 +52,14 @@ export const getTasks = async (req: Request, res: Response): Promise<void> => {
       },
     });
 
+    // Get total count for pagination
+    const total = await prisma.task.count({ where });
+
     res.status(HTTP_STATUS.OK).json({
-      data: tasks,
+      tasks,
+      total,
+      page: 1, // Default page since we're not implementing pagination yet
+      limit: tasks.length,
     });
   } catch (error: unknown) {
     // Handle Zod validation errors
@@ -81,6 +87,41 @@ export const createTask = async (
   try {
     // Validate request body using Zod
     const validatedData = createTaskSchema.parse(req.body);
+
+    // Verify that the project exists
+    const project = await prisma.project.findUnique({
+      where: { id: validatedData.projectId },
+    });
+    if (!project) {
+      res.status(HTTP_STATUS.BAD_REQUEST).json({
+        message: `Project with ID ${validatedData.projectId} not found`,
+      });
+      return;
+    }
+
+    // Verify that the author user exists
+    const author = await prisma.user.findUnique({
+      where: { userId: validatedData.authorUserId },
+    });
+    if (!author) {
+      res.status(HTTP_STATUS.BAD_REQUEST).json({
+        message: `User with ID ${validatedData.authorUserId} not found`,
+      });
+      return;
+    }
+
+    // Verify that the assigned user exists (if provided)
+    if (validatedData.assignedUserId) {
+      const assignee = await prisma.user.findUnique({
+        where: { userId: validatedData.assignedUserId },
+      });
+      if (!assignee) {
+        res.status(HTTP_STATUS.BAD_REQUEST).json({
+          message: `Assigned user with ID ${validatedData.assignedUserId} not found`,
+        });
+        return;
+      }
+    }
 
     // Prepare task data with proper date conversion
     const taskData: {
@@ -240,10 +281,7 @@ export const updateTask = async (
       },
     });
 
-    res.status(HTTP_STATUS.OK).json({
-      message: "Task updated successfully",
-      data: updatedTask,
-    });
+    res.status(HTTP_STATUS.OK).json(updatedTask);
   } catch (error: unknown) {
     // Handle Zod validation errors
     if (error instanceof ZodError) {
@@ -312,6 +350,53 @@ export const deleteTask = async (
       error instanceof Error ? error.message : "Unknown error occurred";
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       message: `Error deleting task: ${errorMessage}`,
+    });
+  }
+};
+
+export const getTaskById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const taskId = Number.parseInt(id, 10);
+
+    if (Number.isNaN(taskId)) {
+      res.status(HTTP_STATUS.BAD_REQUEST).json({
+        message: "Invalid task ID",
+      });
+      return;
+    }
+
+    const task = await prisma.task.findUnique({
+      where: { id: taskId },
+      include: {
+        project: {
+          select: { id: true, name: true },
+        },
+        author: {
+          select: { userId: true, username: true },
+        },
+        assignee: {
+          select: { userId: true, username: true },
+        },
+      },
+    });
+
+    if (!task) {
+      res.status(HTTP_STATUS.NOT_FOUND).json({
+        message: "Task not found",
+      });
+      return;
+    }
+
+    res.status(HTTP_STATUS.OK).json(task);
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
+    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+      message: `Error retrieving task: ${errorMessage}`,
     });
   }
 };

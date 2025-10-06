@@ -8,6 +8,10 @@ const TASK_TAGS_MAX_LENGTH = 500;
 const TASK_POINTS_MIN = 1;
 const TASK_POINTS_MAX = 100;
 
+// Date validation patterns
+const DATE_ONLY_REGEX = /^\d{4}-\d{2}-\d{2}$/;
+const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+
 // Task status enum
 const TASK_STATUS = ["todo", "in_progress", "review", "done"] as const;
 const TASK_PRIORITY = ["low", "medium", "high", "urgent"] as const;
@@ -52,19 +56,25 @@ export const createTaskSchema = z
 
     startDate: z
       .string()
-      .regex(
-        /^\d{4}-\d{2}-\d{2}$/,
-        "Invalid start date format. Use YYYY-MM-DD format"
-      )
+      .refine((val) => {
+        if (!val || val === "") {
+          return true;
+        }
+        // Accept both YYYY-MM-DD and ISO date formats
+        return DATE_ONLY_REGEX.test(val) || ISO_DATE_REGEX.test(val);
+      }, "Invalid start date format. Use YYYY-MM-DD or ISO format")
       .optional()
       .or(z.literal("")),
 
     dueDate: z
       .string()
-      .regex(
-        /^\d{4}-\d{2}-\d{2}$/,
-        "Invalid due date format. Use YYYY-MM-DD format"
-      )
+      .refine((val) => {
+        if (!val || val === "") {
+          return true;
+        }
+        // Accept both YYYY-MM-DD and ISO date formats
+        return DATE_ONLY_REGEX.test(val) || ISO_DATE_REGEX.test(val);
+      }, "Invalid due date format. Use YYYY-MM-DD or ISO format")
       .optional()
       .or(z.literal("")),
 
