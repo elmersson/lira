@@ -19,11 +19,7 @@ export const createUserSchema = z.object({
     .string()
     .min(USERNAME_MIN_LENGTH, "Username must be at least 3 characters long")
     .max(USERNAME_MAX_LENGTH, "Username must not exceed 50 characters")
-    .trim()
-    .regex(
-      /^[a-zA-Z0-9_-]+$/,
-      "Username can only contain letters, numbers, underscores, and hyphens"
-    ),
+    .trim(),
 
   profilePictureUrl: z
     .string()
@@ -37,19 +33,10 @@ export const createUserSchema = z.object({
     .or(z.literal("")),
 
   teamId: z
-    .string()
-    .optional()
-    .transform((val) => {
-      if (!val || val === "") {
-        return;
-      }
-      const num = Number.parseInt(val, 10);
-      if (Number.isNaN(num)) {
-        return;
-      }
-      return num;
-    })
-    .refine((val) => val === undefined || val > 0, "Team ID must be positive"),
+    .number()
+    .int("Team ID must be a whole number")
+    .positive("Team ID must be positive")
+    .optional(),
 });
 
 // Update user validation schema

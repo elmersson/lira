@@ -88,8 +88,14 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
       },
     });
 
+    // Get total count for pagination
+    const total = await prisma.user.count({ where });
+
     res.status(HTTP_STATUS.OK).json({
-      data: users,
+      users,
+      total,
+      page: 1, // Default page since we're not implementing pagination yet
+      limit: users.length,
     });
   } catch (error: unknown) {
     // Handle Zod validation errors
@@ -216,10 +222,7 @@ export const updateUser = async (
       },
     });
 
-    res.status(HTTP_STATUS.OK).json({
-      message: "User updated successfully",
-      data: updatedUser,
-    });
+    res.status(HTTP_STATUS.OK).json(updatedUser);
   } catch (error: unknown) {
     // Handle Zod validation errors
     if (error instanceof ZodError) {
@@ -305,6 +308,53 @@ export const deleteUser = async (
       error instanceof Error ? error.message : "Unknown error occurred";
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       message: `Error deleting user: ${errorMessage}`,
+    });
+  }
+};
+
+export const getUserById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const userId = Number.parseInt(id, 10);
+
+    if (Number.isNaN(userId)) {
+      res.status(HTTP_STATUS.BAD_REQUEST).json({
+        message: "Invalid user ID",
+      });
+      return;
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { userId },
+      include: {
+        team: {
+          select: { id: true, teamName: true },
+        },
+        authoredTasks: {
+          select: { id: true, title: true },
+        },
+        assignedTasks: {
+          select: { id: true, title: true },
+        },
+      },
+    });
+
+    if (!user) {
+      res.status(HTTP_STATUS.NOT_FOUND).json({
+        message: "User not found",
+      });
+      return;
+    }
+
+    res.status(HTTP_STATUS.OK).json(user);
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
+    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+      message: `Error retrieving user: ${errorMessage}`,
     });
   }
 };
