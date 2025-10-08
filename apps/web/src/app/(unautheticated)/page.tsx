@@ -15,7 +15,7 @@ const ENDPOINTS = [
   { name: "Users", path: "/users", displayName: "Users API" },
   { name: "Tasks", path: "/tasks", displayName: "Tasks API" },
   { name: "Projects", path: "/projects", displayName: "Projects API" },
-  { name: "Search", path: "/search", displayName: "Search API" },
+  { name: "Search", path: "/search/health", displayName: "Search API" },
   { name: "Teams", path: "/teams", displayName: "Teams API" },
 ] as const;
 
@@ -110,9 +110,9 @@ function EndpointStatus({
     <div className="flex items-center justify-between py-2">
       <div className="flex items-center gap-3">
         <StatusDot isLoading={isLoading} isOnline={isOnline} />
-        <a className="font-medium hover:underline" href={path}>
+        <u className="font-medium hover:underline" href={path}>
           {displayName}
-        </a>
+        </u>
         <a
           className="text-muted-foreground text-xs underline transition-colors hover:text-foreground"
           href={`${SERVER_URL}${path}`}
@@ -177,9 +177,41 @@ export default function Home() {
             ))}
           </div>
         </section>
-        <Link href="/dashboard">
-          <Button>Dashboard</Button>
-        </Link>
+        <section className="rounded-lg border p-4">
+          <h2 className="mb-4 font-medium">Navigation</h2>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
+            <Link href="/dashboard">
+              <Button className="w-full" variant="outline">
+                Dashboard
+              </Button>
+            </Link>
+            <Link href="/users">
+              <Button className="w-full" variant="outline">
+                Users
+              </Button>
+            </Link>
+            <Link href="/tasks">
+              <Button className="w-full" variant="outline">
+                Tasks
+              </Button>
+            </Link>
+            <Link href="/projects">
+              <Button className="w-full" variant="outline">
+                Projects
+              </Button>
+            </Link>
+            <Link href="/search">
+              <Button className="w-full" variant="outline">
+                Search
+              </Button>
+            </Link>
+            <Link href="/teams">
+              <Button className="w-full" variant="outline">
+                Teams
+              </Button>
+            </Link>
+          </div>
+        </section>
       </div>
     </div>
   );
