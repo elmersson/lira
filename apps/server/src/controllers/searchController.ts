@@ -309,3 +309,37 @@ export const searchSuggestions = async (
     });
   }
 };
+
+export const getSearchHealth = async (_req: Request, res: Response) => {
+  try {
+    // Test database connectivity by performing a simple query
+    const startTime = Date.now();
+    await prisma.user.count();
+    const queryTime = Date.now() - startTime;
+
+    res.status(HTTP_STATUS.OK).json({
+      status: "healthy",
+      service: "search",
+      timestamp: new Date().toISOString(),
+      database: {
+        status: "connected",
+        responseTime: `${queryTime}ms`,
+      },
+      version: "1.0.0",
+    });
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
+
+    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+      status: "unhealthy",
+      service: "search",
+      timestamp: new Date().toISOString(),
+      database: {
+        status: "error",
+        error: errorMessage,
+      },
+      version: "1.0.0",
+    });
+  }
+};
