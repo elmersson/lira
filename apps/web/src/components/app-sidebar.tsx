@@ -14,7 +14,9 @@ import {
   Trash2,
 } from "lucide-react";
 import type * as React from "react";
+import { useState } from "react";
 
+import { CommandDialog } from "@/components/command-dialog";
 import { NavFavorites } from "@/components/nav-favorites";
 import { NavMain } from "@/components/nav-main";
 import { NavSecondary } from "@/components/nav-secondary";
@@ -259,18 +261,29 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const [commandOpen, setCommandOpen] = useState(false);
+
+  // Update the navMain data to handle search click
+  const navMainWithHandlers = data.navMain.map((item) => ({
+    ...item,
+    onClick: item.title === "Search" ? () => setCommandOpen(true) : undefined,
+  }));
+
   return (
-    <Sidebar className="border-r-0" {...props}>
-      <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
-        <NavMain items={data.navMain} />
-      </SidebarHeader>
-      <SidebarContent>
-        <NavFavorites favorites={data.favorites} />
-        <NavWorkspaces workspaces={data.workspaces} />
-        <NavSecondary className="mt-auto" items={data.navSecondary} />
-      </SidebarContent>
-      <SidebarRail />
-    </Sidebar>
+    <>
+      <CommandDialog onOpenChange={setCommandOpen} open={commandOpen} />
+      <Sidebar className="border-r-0" {...props}>
+        <SidebarHeader>
+          <TeamSwitcher teams={data.teams} />
+          <NavMain items={navMainWithHandlers} />
+        </SidebarHeader>
+        <SidebarContent>
+          <NavFavorites favorites={data.favorites} />
+          <NavWorkspaces workspaces={data.workspaces} />
+          <NavSecondary className="mt-auto" items={data.navSecondary} />
+        </SidebarContent>
+        <SidebarRail />
+      </Sidebar>
+    </>
   );
 }
