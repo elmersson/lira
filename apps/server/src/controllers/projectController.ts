@@ -49,12 +49,18 @@ export const createProject = async (
     // Prepare project data with proper date conversion
     const projectData: {
       name: string;
+      emoji?: string;
       description?: string;
       startDate?: Date;
       endDate?: Date;
     } = {
       name: validatedData.name,
     };
+
+    // Only add emoji if it's provided and not empty
+    if (validatedData.emoji?.trim()) {
+      projectData.emoji = validatedData.emoji;
+    }
 
     // Only add description if it's provided and not empty
     if (validatedData.description?.trim()) {

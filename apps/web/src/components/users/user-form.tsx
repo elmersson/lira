@@ -38,12 +38,14 @@ export function UserForm({
       ? {
           cognitoId: initialData.cognitoId,
           username: initialData.username,
+          emoji: initialData.emoji || "",
           profilePictureUrl: initialData.profilePictureUrl || "",
           teamId: initialData.teamId,
         }
       : {
           cognitoId: "",
           username: "",
+          emoji: "",
           profilePictureUrl: "",
         },
   });
@@ -71,6 +73,19 @@ export function UserForm({
         />
         {errors.username && (
           <p className="text-destructive text-sm">{errors.username.message}</p>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="emoji">Emoji</Label>
+        <Input
+          id="emoji"
+          {...register("emoji")}
+          maxLength={10}
+          placeholder="👤"
+        />
+        {errors.emoji && (
+          <p className="text-destructive text-sm">{errors.emoji.message}</p>
         )}
       </div>
 

@@ -50,6 +50,19 @@ export function ProjectForm({ onSuccess }: ProjectFormProps) {
       </div>
 
       <div>
+        <Label htmlFor="emoji">Project Emoji</Label>
+        <Input
+          id="emoji"
+          {...register("emoji")}
+          maxLength={10}
+          placeholder="📱"
+        />
+        {errors.emoji && (
+          <p className="text-red-500 text-sm">{errors.emoji.message}</p>
+        )}
+      </div>
+
+      <div>
         <Label htmlFor="description">Description</Label>
         <Textarea
           id="description"

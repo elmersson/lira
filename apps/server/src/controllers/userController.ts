@@ -35,6 +35,7 @@ const buildUserData = (validatedData: any) => {
   const userData: {
     cognitoId: string;
     username: string;
+    emoji?: string;
     profilePictureUrl?: string;
     teamId?: number;
   } = {
@@ -42,6 +43,9 @@ const buildUserData = (validatedData: any) => {
     username: validatedData.username,
   };
 
+  if (validatedData.emoji?.trim()) {
+    userData.emoji = validatedData.emoji;
+  }
   if (validatedData.profilePictureUrl?.trim()) {
     userData.profilePictureUrl = validatedData.profilePictureUrl;
   }
