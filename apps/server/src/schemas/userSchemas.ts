@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { emoji } from "./shared";
 
 // Constants for validation limits
 const USERNAME_MIN_LENGTH = 3;
@@ -20,6 +21,8 @@ export const createUserSchema = z.object({
     .min(USERNAME_MIN_LENGTH, "Username must be at least 3 characters long")
     .max(USERNAME_MAX_LENGTH, "Username must not exceed 50 characters")
     .trim(),
+
+  emoji,
 
   profilePictureUrl: z
     .string()

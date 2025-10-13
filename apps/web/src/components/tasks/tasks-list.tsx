@@ -82,17 +82,23 @@ export function TasksList({ className }: TasksListProps) {
         <Card className="transition-shadow hover:shadow-md" key={task.id}>
           <CardHeader className="pb-3">
             <div className="flex items-start justify-between">
-              <CardTitle className="line-clamp-2 text-lg">
+              <CardTitle className="line-clamp-2 flex items-center gap-2 text-lg">
+                {task.emoji && <span className="text-xl">{task.emoji}</span>}
                 {task.title}
               </CardTitle>
               <Badge
-                className="ml-2"
+                className="ml-2 flex items-center gap-1"
                 variant={getPriorityVariant(task.priority)}
               >
+                {task.priorityEmoji && <span>{task.priorityEmoji}</span>}
                 {task.priority.toUpperCase()}
               </Badge>
             </div>
-            <Badge className="w-fit" variant={getStatusVariant(task.status)}>
+            <Badge
+              className="flex w-fit items-center gap-1"
+              variant={getStatusVariant(task.status)}
+            >
+              {task.statusEmoji && <span>{task.statusEmoji}</span>}
               {formatStatus(task.status)}
             </Badge>
           </CardHeader>

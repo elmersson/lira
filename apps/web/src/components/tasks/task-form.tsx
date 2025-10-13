@@ -50,9 +50,12 @@ export function TaskForm({
     defaultValues: initialData
       ? {
           title: initialData.title,
+          emoji: initialData.emoji || "",
           description: initialData.description || "",
           status: initialData.status,
+          statusEmoji: initialData.statusEmoji || "",
           priority: initialData.priority,
+          priorityEmoji: initialData.priorityEmoji || "",
           tags: initialData.tags || "",
           startDate: initialData.startDate || "",
           dueDate: initialData.dueDate || "",
@@ -63,9 +66,12 @@ export function TaskForm({
         }
       : {
           title: "",
+          emoji: "",
           description: "",
           status: "todo",
+          statusEmoji: "",
           priority: "medium",
+          priorityEmoji: "",
           tags: "",
           startDate: "",
           dueDate: "",
@@ -88,6 +94,19 @@ export function TaskForm({
         />
         {errors.title && (
           <p className="text-destructive text-sm">{errors.title.message}</p>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="emoji">Task Emoji</Label>
+        <Input
+          id="emoji"
+          {...register("emoji")}
+          maxLength={10}
+          placeholder="✅"
+        />
+        {errors.emoji && (
+          <p className="text-destructive text-sm">{errors.emoji.message}</p>
         )}
       </div>
 
@@ -159,6 +178,38 @@ export function TaskForm({
           {errors.priority && (
             <p className="text-destructive text-sm">
               {errors.priority.message}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="statusEmoji">Status Emoji</Label>
+          <Input
+            id="statusEmoji"
+            {...register("statusEmoji")}
+            maxLength={10}
+            placeholder="⏳"
+          />
+          {errors.statusEmoji && (
+            <p className="text-destructive text-sm">
+              {errors.statusEmoji.message}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="priorityEmoji">Priority Emoji</Label>
+          <Input
+            id="priorityEmoji"
+            {...register("priorityEmoji")}
+            maxLength={10}
+            placeholder="🔴"
+          />
+          {errors.priorityEmoji && (
+            <p className="text-destructive text-sm">
+              {errors.priorityEmoji.message}
             </p>
           )}
         </div>

@@ -46,6 +46,19 @@ export function TeamForm({ onSuccess }: TeamFormProps) {
       </div>
 
       <div>
+        <Label htmlFor="emoji">Team Emoji</Label>
+        <Input
+          id="emoji"
+          {...register("emoji")}
+          maxLength={10}
+          placeholder="🚀"
+        />
+        {errors.emoji && (
+          <p className="text-red-500 text-sm">{errors.emoji.message}</p>
+        )}
+      </div>
+
+      <div>
         <Label htmlFor="productOwnerUserId">Product Owner User ID</Label>
         <Input
           id="productOwnerUserId"

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { emoji } from "./shared";
 
 // Constants for validation limits
 const TEAM_NAME_MIN_LENGTH = 3;
@@ -11,6 +12,8 @@ export const createTeamSchema = z.object({
     .min(TEAM_NAME_MIN_LENGTH, "Team name must be at least 3 characters long")
     .max(TEAM_NAME_MAX_LENGTH, "Team name must not exceed 100 characters")
     .trim(),
+
+  emoji,
 
   productOwnerUserId: z
     .number()

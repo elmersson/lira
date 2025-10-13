@@ -135,6 +135,7 @@ export const createTeam = async (
     // Prepare team data
     const teamData: {
       teamName: string;
+      emoji?: string;
       productOwnerUserId?: number;
       projectManagerUserId?: number;
     } = {
@@ -142,6 +143,9 @@ export const createTeam = async (
     };
 
     // Add optional fields if provided
+    if (validatedData.emoji?.trim()) {
+      teamData.emoji = validatedData.emoji;
+    }
     if (validatedData.productOwnerUserId) {
       teamData.productOwnerUserId = validatedData.productOwnerUserId;
     }

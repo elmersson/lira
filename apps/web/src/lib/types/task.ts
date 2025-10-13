@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { emoji } from "@/lib/validation/shared";
 
 // Constants for validation
 const TITLE_MIN_LENGTH = 1;
@@ -44,9 +45,12 @@ export type TaskPriority = "low" | "medium" | "high" | "urgent";
 export type Task = {
   id: number;
   title: string;
+  emoji?: string;
   description?: string;
   status: TaskStatus;
+  statusEmoji?: string;
   priority: TaskPriority;
+  priorityEmoji?: string;
   tags?: string;
   startDate?: string;
   dueDate?: string;
@@ -73,13 +77,16 @@ export type Task = {
 // Zod schemas for form validation
 export const createTaskSchema = z.object({
   title: z.string().min(TITLE_MIN_LENGTH, "Title is required"),
+  emoji,
   description: z
     .string()
     .min(DESCRIPTION_MIN_LENGTH)
     .optional()
     .or(z.literal("")),
   status: z.enum(["todo", "in_progress", "review", "done"]).default("todo"),
+  statusEmoji: emoji,
   priority: z.enum(["low", "medium", "high", "urgent"]).default("medium"),
+  priorityEmoji: emoji,
   tags: z.string().optional().or(z.literal("")),
   startDate: z.string().optional().or(z.literal("")),
   dueDate: z.string().optional().or(z.literal("")),

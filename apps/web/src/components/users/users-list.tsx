@@ -65,7 +65,10 @@ function UserCard({ user }: { user: User }) {
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div>
-            <CardTitle className="text-base">{user.username}</CardTitle>
+            <CardTitle className="flex items-center gap-2 text-base">
+              {user.emoji && <span className="text-lg">{user.emoji}</span>}
+              {user.username}
+            </CardTitle>
             <CardDescription className="text-sm">
               ID: {user.userId}
             </CardDescription>
@@ -92,7 +95,10 @@ function UserCard({ user }: { user: User }) {
         {user.team && (
           <div className="flex items-center gap-2 text-sm">
             <span className="text-muted-foreground">Team:</span>
-            <Badge variant="secondary">{user.team.teamName}</Badge>
+            <Badge className="flex items-center gap-1" variant="secondary">
+              {user.team.emoji && <span>{user.team.emoji}</span>}
+              {user.team.teamName}
+            </Badge>
           </div>
         )}
 

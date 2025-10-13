@@ -126,9 +126,12 @@ export const createTask = async (
     // Prepare task data with proper date conversion
     const taskData: {
       title: string;
+      emoji?: string;
       description?: string;
       status?: string;
+      statusEmoji?: string;
       priority?: string;
+      priorityEmoji?: string;
       tags?: string;
       startDate?: Date;
       dueDate?: Date;
@@ -143,14 +146,23 @@ export const createTask = async (
     };
 
     // Add optional fields if provided
+    if (validatedData.emoji?.trim()) {
+      taskData.emoji = validatedData.emoji;
+    }
     if (validatedData.description?.trim()) {
       taskData.description = validatedData.description;
     }
     if (validatedData.status) {
       taskData.status = validatedData.status;
     }
+    if (validatedData.statusEmoji?.trim()) {
+      taskData.statusEmoji = validatedData.statusEmoji;
+    }
     if (validatedData.priority) {
       taskData.priority = validatedData.priority;
+    }
+    if (validatedData.priorityEmoji?.trim()) {
+      taskData.priorityEmoji = validatedData.priorityEmoji;
     }
     if (validatedData.tags?.trim()) {
       taskData.tags = validatedData.tags;

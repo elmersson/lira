@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { emoji } from "./shared";
 
 // Constants for validation limits
 const TASK_TITLE_MIN_LENGTH = 1;
@@ -25,6 +26,8 @@ export const createTaskSchema = z
       .max(TASK_TITLE_MAX_LENGTH, "Task title must not exceed 200 characters")
       .trim(),
 
+    emoji,
+
     description: z
       .string()
       .max(
@@ -41,11 +44,15 @@ export const createTaskSchema = z
       })
       .optional(),
 
+    statusEmoji: emoji,
+
     priority: z
       .enum(TASK_PRIORITY, {
         message: "Priority must be one of: low, medium, high, urgent",
       })
       .optional(),
+
+    priorityEmoji: emoji,
 
     tags: z
       .string()

@@ -1,5 +1,5 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
+import Loader from "@/components/loader";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -8,46 +8,89 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useTeams } from "@/hooks/api/use-teams";
-import { QUERY_KEYS } from "@/lib/constants/api";
+import type { Team } from "@/lib/types/team";
 
-export function TeamsList() {
-  const queryClient = useQueryClient();
-  const { data: teams, isLoading, error } = useTeams();
+type TeamsListProps = {
+  className?: string;
+};
 
-  const handleRefresh = () => {
-    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TEAMS });
-  };
+export function TeamsList({ className }: TeamsListProps) {
+  const { data: teamsResponse, isLoading, error } = useTeams();
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return (
+      <div className="py-8 text-center">
+        <p className="text-destructive">Failed to load teams</p>
+        <p className="text-muted-foreground text-sm">{error.message}</p>
+      </div>
+    );
+  }
+
+  const teams = teamsResponse || [];
+
+  if (teams.length === 0) {
+    return (
+      <div className="py-8 text-center">
+        <p className="text-muted-foreground">No teams found</p>
+      </div>
+    );
+  }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <span className="rounded bg-green-100 px-2 py-1 font-mono text-green-800 text-xs">
-            GET
-          </span>
-          /teams
+    <div className={`space-y-4 ${className || ""}`}>
+      <div className="flex items-center justify-between">
+        <h2 className="font-semibold text-lg">Teams ({teams.length})</h2>
+        <Badge variant="outline">{teams.length} total</Badge>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {teams.map((team: Team) => (
+          <TeamCard key={team.id} team={team} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TeamCard({ team }: { team: Team }) {
+  return (
+    <Card className="transition-shadow hover:shadow-md">
+      <CardHeader className="pb-3">
+        <CardTitle className="flex items-center gap-2 text-base">
+          {team.emoji && <span className="text-lg">{team.emoji}</span>}
+          {team.teamName}
         </CardTitle>
-        <CardDescription>Retrieve all teams from the database</CardDescription>
+        <CardDescription className="text-sm">ID: {team.id}</CardDescription>
       </CardHeader>
-      <CardContent>
-        <Button className="w-full" disabled={isLoading} onClick={handleRefresh}>
-          {isLoading ? "Loading..." : "Fetch Teams"}
-        </Button>
-
-        {error && (
-          <div className="mt-4 rounded bg-red-50 p-3 text-red-800">
-            Error: {error.message}
+      <CardContent className="space-y-2 pt-0">
+        {team.productOwnerUserId && (
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-muted-foreground">Product Owner:</span>
+            <code className="rounded bg-muted px-1 py-0.5 text-xs">
+              #{team.productOwnerUserId}
+            </code>
           </div>
         )}
 
-        {teams && (
-          <div className="mt-4">
-            <h4 className="font-medium">Response:</h4>
-            <pre className="mt-2 max-h-60 overflow-auto rounded bg-gray-100 p-3 text-sm dark:bg-gray-800">
-              {JSON.stringify(teams, null, 2)}
-            </pre>
+        {team.projectManagerUserId && (
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-muted-foreground">Project Manager:</span>
+            <code className="rounded bg-muted px-1 py-0.5 text-xs">
+              #{team.projectManagerUserId}
+            </code>
           </div>
         )}
+
+        <div className="flex items-center gap-2 text-sm">
+          <span className="text-muted-foreground">Created:</span>
+          <span className="text-xs">
+            {new Date(team.createdAt).toLocaleDateString()}
+          </span>
+        </div>
       </CardContent>
     </Card>
   );

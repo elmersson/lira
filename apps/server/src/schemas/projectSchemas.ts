@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { emoji } from "./shared";
 
 // Constants for validation limits
 const PROJECT_NAME_MIN_LENGTH = 3;
@@ -20,6 +21,8 @@ export const createProjectSchema = z
         "Project name must not exceed 100 characters"
       )
       .trim(),
+
+    emoji,
 
     description: z
       .string()
