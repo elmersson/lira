@@ -1,4 +1,6 @@
+"use client";
 import Link from "next/link";
+import { Bar, BarChart } from "recharts";
 import {
   Card,
   CardContent,
@@ -6,6 +8,28 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
+import { type ChartConfig, ChartContainer } from "@/components/ui/chart";
+
+const chartConfig = {
+  desktop: {
+    label: "Desktop",
+    color: "#2563eb",
+  },
+  mobile: {
+    label: "Mobile",
+    color: "#60a5fa",
+  },
+} satisfies ChartConfig;
+
+const chartData = [
+  { month: "January", desktop: 186, mobile: 80 },
+  { month: "February", desktop: 305, mobile: 200 },
+  { month: "March", desktop: 237, mobile: 120 },
+  { month: "April", desktop: 73, mobile: 190 },
+  { month: "May", desktop: 209, mobile: 130 },
+  { month: "June", desktop: 214, mobile: 140 },
+];
 
 export default function DashboardPage() {
   return (
@@ -139,7 +163,7 @@ export default function DashboardPage() {
             <CardDescription>Your workspace at a glance</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
+            {/* <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="font-medium text-sm">Active Projects</span>
                 <span className="font-bold text-2xl">4</span>
@@ -156,7 +180,16 @@ export default function DashboardPage() {
                 <span className="font-medium text-sm">Completed Today</span>
                 <span className="font-bold text-2xl text-green-600">7</span>
               </div>
-            </div>
+            </div> */}
+            <ChartContainer
+              className="min-h-[200px] w-full"
+              config={chartConfig}
+            >
+              <BarChart accessibilityLayer data={chartData}>
+                <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
+                <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+              </BarChart>
+            </ChartContainer>
           </CardContent>
         </Card>
 
