@@ -145,11 +145,25 @@ export default function DashboardPage() {
           <Card className="cursor-pointer transition-shadow hover:shadow-lg">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="font-medium text-sm">Tasks</CardTitle>
-              <span className="text-2xl">📋</span>
+              <span className="text-2xl">✅</span>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground text-xs">
                 Track tasks and monitor progress
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/dashboard/favorites">
+          <Card className="cursor-pointer transition-shadow hover:shadow-lg">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="font-medium text-sm">Favorites</CardTitle>
+              <span className="text-2xl">⭐</span>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground text-xs">
+                Manage your favorite items
               </p>
             </CardContent>
           </Card>

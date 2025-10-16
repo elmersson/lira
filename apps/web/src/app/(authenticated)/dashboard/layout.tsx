@@ -63,6 +63,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         >
           Tasks
         </Link>
+        <Link
+          className="font-medium text-sm transition-colors hover:text-primary"
+          href="/dashboard/favorites"
+        >
+          Favorites
+        </Link>
       </nav>
       {children}
     </div>
