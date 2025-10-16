@@ -4,14 +4,14 @@ import { toast } from "sonner";
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000";
 
-export interface Favorite {
+export type Favorite = {
   id: number;
   userId: number;
   entityType: "project" | "task" | "team" | "user";
   entityId: number;
   createdAt: string;
   entity?: any;
-}
+};
 
 // API functions
 const favoritesApi = {
