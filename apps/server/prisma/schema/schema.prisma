@@ -24,6 +24,7 @@ model User {
   taskAssignments TaskAssignment[]
   attachments     Attachment[]
   comments        Comment[]
+  favorites       Favorite[]
   team            Team?            @relation(fields: [teamId], references: [id])
 }
 
@@ -110,4 +111,17 @@ model Comment {
 
   task Task @relation(fields: [taskId], references: [id])
   user User @relation(fields: [userId], references: [userId])
+}
+
+model Favorite {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  entityType  String   // "project", "task", "team", "user"
+  entityId    Int
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [userId])
+
+  @@unique([userId, entityType, entityId])
+  @@index([userId, entityType])
 }

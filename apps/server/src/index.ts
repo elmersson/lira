@@ -7,11 +7,13 @@ import helmet from "helmet";
 import morgan from "morgan";
 import { HTTP_STATUS } from "./helpers";
 /* ROUTE IMPORTS */
+import favoriteRoutes from "./routes/favoriteRoutes";
 import projectRoutes from "./routes/projectRoutes";
 import searchRoutes from "./routes/searchRoutes";
 import taskRoutes from "./routes/taskRoutes";
 import teamRoutes from "./routes/teamRoutes";
 import userRoutes from "./routes/userRoutes";
+import userTestRoutes from "./routes/userTestRoutes";
 
 /* CONFIGURATIONS */
 const app = express();
@@ -35,6 +37,8 @@ app.get("/", (_req, res) => {
   }, 200);
 });
 
+app.use("/api", userTestRoutes);
+app.use("/favorites", favoriteRoutes);
 app.use("/projects", projectRoutes);
 app.use("/tasks", taskRoutes);
 app.use("/search", searchRoutes);
