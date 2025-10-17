@@ -278,7 +278,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <NavMain items={navMainWithHandlers} />
         </SidebarHeader>
         <SidebarContent>
-          <NavFavorites favorites={data.favorites} />
+          <NavFavorites />
           <NavWorkspaces workspaces={data.workspaces} />
           <NavSecondary className="mt-auto" items={data.navSecondary} />
         </SidebarContent>
