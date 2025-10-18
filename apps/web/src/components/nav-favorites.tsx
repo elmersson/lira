@@ -7,6 +7,7 @@ import {
   StarOff,
 } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 import {
   DropdownMenu,
@@ -77,13 +78,22 @@ const getEntityName = (favorite: Favorite): string => {
   return `${favorite.entityType} ${favorite.entityId}`;
 };
 
+// Default user ID fallback
+const DEFAULT_USER_ID = 3;
+
 export function NavFavorites() {
   const { isMobile } = useSidebar();
+  const [isMounted, setIsMounted] = useState(false);
   const { data: user } = useTestUser();
   const { data: favoritesData, isLoading } = useUserFavorites(
-    user?.userId || 0
+    user?.userId || DEFAULT_USER_ID
   );
   const removeFavoriteMutation = useRemoveFavorite();
+
+  // Prevent hydration mismatch by only rendering dynamic content after mount
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Flatten favorites from grouped data into a single array
   const favorites: Favorite[] = favoritesData
@@ -113,6 +123,24 @@ export function NavFavorites() {
     window.open(url, "_blank");
   };
 
+  // Show consistent initial state during SSR and hydration
+  if (!isMounted) {
+    return (
+      <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+        <SidebarGroupLabel>Favorites</SidebarGroupLabel>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton className="text-sidebar-foreground/70" disabled>
+              <span>⭐</span>
+              <span>Favorites</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarGroup>
+    );
+  }
+
+  // Show loading state only after mount
   if (isLoading) {
     return (
       <SidebarGroup className="group-data-[collapsible=icon]:hidden">

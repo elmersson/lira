@@ -4,6 +4,10 @@ import { toast } from "sonner";
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000";
 
+// Cache timing constants
+const FAVORITES_STALE_TIME = 5 * 60 * 1000; // 5 minutes
+const FAVORITES_GC_TIME = 10 * 60 * 1000; // 10 minutes
+
 export type Favorite = {
   id: number;
   userId: number;
@@ -107,10 +111,16 @@ export const useRemoveFavorite = () => {
 };
 
 export const useUserFavorites = (userId: number) => {
+  console.log("Fetching favorites for userId:", userId);
   return useQuery({
     queryKey: ["favorites", "user", userId],
     queryFn: () => favoritesApi.getUserFavorites(userId),
     enabled: !!userId,
+    staleTime: FAVORITES_STALE_TIME, // 5 minutes - data is considered fresh for 5 minutes
+    gcTime: FAVORITES_GC_TIME, // 10 minutes - keep in cache for 10 minutes
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
+    refetchOnMount: false, // Don't refetch on every mount if data exists
+    refetchOnReconnect: false, // Don't refetch on network reconnect
   });
 };
 
@@ -119,6 +129,11 @@ export const useFavoritesByType = (userId: number, entityType: string) => {
     queryKey: ["favorites", "user", userId, entityType],
     queryFn: () => favoritesApi.getFavoritesByType(userId, entityType),
     enabled: !!userId && !!entityType,
+    staleTime: FAVORITES_STALE_TIME, // 5 minutes - data is considered fresh for 5 minutes
+    gcTime: FAVORITES_GC_TIME, // 10 minutes - keep in cache for 10 minutes
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
+    refetchOnMount: false, // Don't refetch on every mount if data exists
+    refetchOnReconnect: false, // Don't refetch on network reconnect
   });
 };
 
@@ -131,5 +146,10 @@ export const useIsFavorite = (
     queryKey: ["favorites", "check", userId, entityType, entityId],
     queryFn: () => favoritesApi.checkIsFavorite(userId, entityType, entityId),
     enabled: !!userId && !!entityType && !!entityId,
+    staleTime: FAVORITES_STALE_TIME, // 5 minutes - data is considered fresh for 5 minutes
+    gcTime: FAVORITES_GC_TIME, // 10 minutes - keep in cache for 10 minutes
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
+    refetchOnMount: false, // Don't refetch on every mount if data exists
+    refetchOnReconnect: false, // Don't refetch on network reconnect
   });
 };
